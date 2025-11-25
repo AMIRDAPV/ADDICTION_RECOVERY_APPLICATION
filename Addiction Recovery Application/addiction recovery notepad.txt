@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | About Us</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body data-page="about">
+  <header class="navbar" id="navbar"></header>
+
+  <main class="content" style="max-width:1100px;margin:0 auto;">
+    <section class="hero-card" style="margin-top:40px;">
+      <span class="pill">Rooted in compassion & science</span>
+      <h1>Who we are</h1>
+      <p>Bloom Recovery is a mindful tech wellbeing collective helping mobile-first individuals rebalance their habits with kindness, community, and consistency.</p>
+    </section>
+
+    <section class="card-grid">
+      <div class="info-card">
+        <h3>Our story</h3>
+        <p>We began as a volunteer support group for students feeling overwhelmed by endless feeds. Their courage inspired a full toolkit designed to make small off-screen wins feel exciting.</p>
+      </div>
+      <div class="info-card">
+        <h3>How we help</h3>
+        <p>Weekly rituals, gentle reminders, and a living tree dashboard keep motivation visual. Our challenges are grounded in CBT, habit stacking, and neuroscience-backed detox strategies.</p>
+      </div>
+      <div class="info-card">
+        <h3>Who we support</h3>
+        <p>From busy creators to students and professionals, anyone who feels “always on” can lean on Bloom. Every journey is self-paced with optional coach check-ins.</p>
+    </div>
+    </section>
+
+    <section class="progress-wrapper" style="margin-top:42px;">
+      <h2 class="section-title">Our values</h2>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>Awareness</h3>
+          <p>Track your wins and notice patterns. Awareness is the first spark that helps your sapling take root.</p>
+        </div>
+        <div class="info-card">
+          <h3>Support</h3>
+          <p>We offer prompts and community nudges so you never feel alone while reshaping your habits.</p>
+        </div>
+        <div class="info-card">
+          <h3>Motivation</h3>
+          <p>Visual progress, streaks, and reflective wins keep dopamine aligned with positive choices.</p>
+        </div>
+        <div class="info-card">
+          <h3>Joy</h3>
+          <p>Real-world pleasures—sunshine, hobbies, relationships—are celebrated just as much as digital discipline.</p>
+    </div>
+  </div>
+    </section>
+
+    <section class="progress-wrapper" id="contact" style="margin-top:42px;">
+      <h2 class="section-title">Connect with us</h2>
+      <p style="color:var(--pastel-muted);">Let us know how we can make Bloom brighter for you.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:24px;">
+        <div class="info-card" style="flex:1;min-width:240px;">
+          <h3>Email</h3>
+          <p>support@bloomrecovery.app</p>
+    </div>
+        <div class="info-card" style="flex:1;min-width:240px;">
+          <h3>Coaching</h3>
+          <p>Book a 20-minute clarity call with a recovery coach to design your first week.</p>
+    </div>
+  </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>
+
+--------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Home</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    // Check if we should show loading screen (only on first visit)
+    (function() {
+      const hasSeenSplash = sessionStorage.getItem('loadedFromSplash');
+      const isDirectAccess = !document.referrer || 
+        (!document.referrer.includes('loading.html') && 
+         !document.referrer.includes('index.html') &&
+         !document.referrer.includes(window.location.origin));
+      
+      // Only redirect if user hasn't seen splash and is accessing directly
+      if (!hasSeenSplash && isDirectAccess && window.location.pathname.includes('index.html')) {
+        window.location.href = 'loading.html';
+      }
+    })();
+  </script>
+</head>
+<body data-page="home">
+  <header class="navbar" id="navbar"></header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Journey Map</h3>
+      <a class="sidebar-link" href="#mission">🌟 Mission</a>
+      <a class="sidebar-link" href="#about">🤝 About Us</a>
+      <a class="sidebar-link" href="#contact">💬 Contact</a>
+      <a class="sidebar-link" href="#settings">⚙️ Settings</a>
+      <a class="sidebar-link" href="#progress">📈 Growth Chart</a>
+    </aside>
+
+    <main class="content">
+      <section class="hero-card">
+        <span class="pill">Mindful digital habits start here</span>
+        <h1>Bloom beyond your screen</h1>
+        <p>Personalized weekly challenges, gentle reminders, and a living tree companion that celebrates every mindful moment away from your phone.</p>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn-primary" data-action="start-journey">Start My Recovery Quiz</button>
+          <button class="btn-outline" onclick="location.href='view-data.html'">View My Journey Data</button>
+        </div>
+      </section>
+
+      <section class="progress-wrapper" id="progress">
+        <h2 class="section-title">Weekly progress tracker</h2>
+        <p style="margin:0;color:var(--pastel-muted);">Complete your week-by-week challenges to watch your sapling flourish into a blooming tree.</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+          <span id="progressText" style="font-weight:600;">0% completed</span>
+          <span id="challengeCount" style="color:var(--pastel-muted);">0 of 28 mindful moments logged</span>
+        </div>
+        <div class="tree-stage" data-stage="sapling" id="treeStage">
+          <div class="tree-visual">
+            <div class="tree-trunk"></div>
+            <div class="tree-leaves"></div>
+            <div class="tree-leaf-container">
+              <!-- Leaves will be dynamically generated based on progress -->
+            </div>
+            <div class="tree-buds">
+              <!-- Buds will be dynamically generated -->
+            </div>
+            <div class="tree-flowers">
+              <!-- Flowers will be dynamically generated -->
+            </div>
+            <div class="tree-pot"></div>
+          </div>
+        </div>
+        <div class="cta-row">
+          <a class="btn-primary" style="text-decoration:none;text-align:center;" href="recovery.html">Continue Weekly Challenges</a>
+        </div>
+      </section>
+
+      <section class="card-grid" id="mission">
+        <div class="info-card">
+          <h3>Mission</h3>
+          <p>Empower mobile users to reclaim their focus with compassionate, science-backed routines that turn mindful breaks into lasting habits.</p>
+        </div>
+        <div class="info-card" id="about">
+          <h3>About Us</h3>
+          <p>Bloom Recovery is built by wellbeing coaches and behavioral psychologists who believe small, consistent wins can transform your digital life.</p>
+        </div>
+        <div class="info-card">
+          <h3>Weekly Rituals</h3>
+          <p>Every task—from mindful mornings to tech-free evenings—feeds your sapling, helping it grow leaf by leaf into a flourishing tree.</p>
+        </div>
+      </section>
+
+      <section class="card-grid" style="margin-top:32px;">
+        <div class="media-card">
+          <img src="https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=900&q=80" alt="Young man stepping away from his phone to journal outdoors">
+          <div class="media-content">
+            <h3>Pausing the scroll</h3>
+            <p>Ravi traded midnight doomscrolling for sunset journaling to anchor his evenings in calm.</p>
+          </div>
+        </div>
+        <div class="media-card">
+          <img src="https://images.unsplash.com/photo-1528892952291-009c663ce843?auto=format&fit=crop&w=900&q=80" alt="Young woman smiling while putting her phone away in her bag">
+          <div class="media-content">
+            <h3>Reclaiming mornings</h3>
+            <p>Ananya now begins her day with mindful breathing before reaching for her phone, fueling confidence for the day ahead.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="progress-wrapper" id="settings">
+        <h2 class="section-title">Personal settings</h2>
+        <div class="card-grid">
+          <div class="info-card">
+            <h3>Reminder window</h3>
+            <p>Plan when Bloom pings you gently to log your mindful win—morning, midday, or evening reflections.</p>
+            <button class="btn-outline" data-action="open-settings">Adjust reminders</button>
+          </div>
+          <div class="info-card">
+            <h3>Motivation tone</h3>
+            <p>Choose between calm affirmations, energetic cheers, or minimal check-ins to match your recovery style.</p>
+            <button class="btn-outline" data-action="open-settings">Customize tone</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="progress-wrapper" id="contact">
+        <h2 class="section-title">Let’s walk this path together</h2>
+        <p style="margin-bottom:18px;">Reach out for support, share feedback, or connect with a recovery coach.</p>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;">
+          <div class="info-card" style="flex:1;min-width:240px;">
+            <h3>Email</h3>
+            <p>support@bloomrecovery.app</p>
+          </div>
+          <div class="info-card" style="flex:1;min-width:240px;">
+            <h3>Community</h3>
+            <p>Join weekly live circles and gentle accountability buddies.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span> · Growing mindful together
+  </footer>
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloom Recovery | Loading</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #fefcff 0%, #f1fbff 40%, #fef6f9 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .loading-container {
+      text-align: center;
+      padding: 40px;
+      max-width: 500px;
+    }
+
+    .loading-gif-container {
+      width: 100%;
+      max-width: 400px;
+      height: 300px;
+      margin: 0 auto 30px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(166, 220, 239, 0.3);
+      background: linear-gradient(135deg, #a6dcef, #f7d6e0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .loading-gif-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .loading-animation {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #a6dcef 0%, #f7d6e0 50%, #c8e6c9 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .phone-icon {
+      font-size: 80px;
+      animation: phoneFloat 2s ease-in-out infinite;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+    }
+
+    @keyframes phoneFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    .recovery-icon {
+      font-size: 60px;
+      position: absolute;
+      animation: recoveryGrow 2s ease-in-out infinite;
+      opacity: 0.8;
+    }
+
+    .recovery-icon:nth-child(1) {
+      top: 20%;
+      left: 15%;
+      animation-delay: 0s;
+    }
+
+    .recovery-icon:nth-child(2) {
+      top: 60%;
+      right: 20%;
+      animation-delay: 0.5s;
+    }
+
+    .recovery-icon:nth-child(3) {
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      animation-delay: 1s;
+    }
+
+    @keyframes recoveryGrow {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+      50% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+    }
+
+    .loading-text {
+      color: #3a3a3a;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      animation: textFade 2s ease-in-out infinite;
+    }
+
+    @keyframes textFade {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    .loading-subtext {
+      color: #6b6b6b;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(166, 220, 239, 0.3);
+      border-top: 4px solid #a6dcef;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .brand-name {
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a6dcef, #f7d6e0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-container">
+    <div class="brand-name">🌱 Bloom Recovery</div>
+    
+    <div class="loading-gif-container">
+      <div class="loading-animation">
+        <div class="phone-icon">📱</div>
+        <div class="recovery-icon">🌿</div>
+        <div class="recovery-icon">🌸</div>
+        <div class="recovery-icon">✨</div>
+      </div>
+    </div>
+    
+    <div class="loading-text">Growing Your Recovery Journey</div>
+    <div class="loading-subtext">Taking a mindful moment to prepare your personalized experience...</div>
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    // Mark that we've shown the loading screen
+    sessionStorage.setItem('loadedFromSplash', 'true');
+    
+    // Preload homepage for smoother transition
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = 'index.html';
+    document.head.appendChild(link);
+    
+    // Redirect to homepage after loading animation
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 2500); // 2.5 second loading screen
+  </script>
+</body>
+</html>
+
+----------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Login</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    function loginUser() {
+      const username = document.getElementById("username").value.trim();
+      if (!username) {
+        alert("Please enter a username!");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.username === username);
+
+      if (!user) {
+        alert("We couldn't find that account. Please sign up to begin.");
+        window.location.href = "signup.html";
+        return;
+      }
+
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("currentUser", username);
+      const hasQuizResponses = Array.isArray(user.answers) && user.answers.length > 0;
+      const message = hasQuizResponses
+        ? "Welcome back! Jump straight into your weekly challenges."
+        : "Welcome back! Let's begin with a quick mindful check-in.";
+      alert(message);
+      window.location.href = hasQuizResponses ? "recovery.html" : "quiz.html";
+    }
+
+    function initLoginPage() {
+      const panel = document.getElementById("returningUserPanel");
+      const nameEl = document.getElementById("returningUserName");
+      const loggedIn = localStorage.getItem("loggedIn") === "true";
+      const currentUser = localStorage.getItem("currentUser") || "";
+
+      if (!panel) return;
+
+      if (loggedIn && currentUser) {
+        nameEl.textContent = currentUser;
+        panel.style.display = "block";
+      } else {
+        panel.style.display = "none";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initLoginPage);
+  </script>
+</head>
+<body data-page="login">
+  <header class="navbar" id="navbar"></header>
+
+  <main>
+    <div class="form-card">
+      <h2>Log in to your journey</h2>
+      <p style="color:var(--pastel-muted);margin-bottom:24px;">Access your weekly challenges and watch your tree bloom.</p>
+      <input id="username" placeholder="Enter username">
+      <button class="btn-primary" style="width:100%;" onclick="loginUser()">Login</button>
+      <p style="color:var(--pastel-muted);font-size:14px;margin-top:18px;">
+        New here? <a class="nav-link" style="color:var(--pastel-text);" href="signup.html">Create an account</a>
+      </p>
+    </div>
+
+    <div id="returningUserPanel" class="progress-wrapper" style="display:none;max-width:480px;margin:40px auto 0;">
+      <h2 class="section-title" style="margin-bottom:12px;">Hi again, <span id="returningUserName"></span>!</h2>
+      <p style="color:var(--pastel-muted);margin-bottom:20px;">
+        Ready to pick up where you left off? Jump straight into your weekly mindful challenges or revisit the quiz anytime.
+      </p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a class="btn-primary" style="text-decoration:none;flex:1;min-width:180px;text-align:center;" href="recovery.html">Continue Weekly Challenges</a>
+        <a class="btn-outline" style="text-decoration:none;flex:1;min-width:180px;text-align:center;" href="quiz.html">Retake Mindful Quiz</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>
+--------------------------------------------------------------------------------
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Addiction Quiz</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("quizForm");
+      const submitBtn = document.getElementById("submitQuizBtn");
+      
+      // Prevent form submission
+      if (form) {
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          return false;
+        });
+      }
+      
+      // Add click handler to button
+      if (submitBtn) {
+        submitBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          submitQuiz();
+        });
+      }
+    });
+    
+    function submitQuiz() {
+      const username = localStorage.getItem("currentUser");
+      if (!username) {
+        alert("Please log in first so we can save your progress.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      // Disable button to prevent double submission
+      const submitBtn = document.getElementById("submitQuizBtn");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing...";
+      }
+
+      try {
+        // Collect all answers properly
+        const answers = [];
+        const form = document.getElementById("quizForm");
+        
+        if (!form) {
+          alert("Form not found. Please refresh the page.");
+          return;
+        }
+        
+        // Text inputs and textareas
+        form.querySelectorAll('input[type="text"], textarea').forEach(el => {
+          if (el.value?.trim()) answers.push(el.value.trim());
+        });
+        
+        // Select dropdowns
+        form.querySelectorAll('select').forEach(el => {
+          if (el.value) answers.push(el.value);
+        });
+        
+        // Checkboxes (multiple selections)
+        form.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
+          answers.push(el.value);
+        });
+        
+        // Radio buttons (single selection per group)
+        form.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+          answers.push(el.value);
+        });
+
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const userIndex = users.findIndex(u => u.username === username);
+
+        if (userIndex >= 0) {
+          users[userIndex].answers = answers;
+          localStorage.setItem("users", JSON.stringify(users));
+        }
+
+        // Comprehensive scoring system
+        let score = 0;
+        
+        // Question 2: Duration (0-3 points)
+        if (answers.includes("More than a year")) score += 3;
+        else if (answers.includes("A year")) score += 2;
+        else if (answers.includes("6 months")) score += 1;
+        
+        // Question 3: Emotional response (0-4 points)
+        if (answers.includes("Anxious")) score += 2;
+        if (answers.includes("Irritated")) score += 2;
+        if (answers.includes("Relaxed")) score -= 1; // Positive response reduces score
+        
+        // Question 4: Reduction attempts (0-1 points)
+        if (answers.includes("Yes")) score += 1;
+        
+        // Question 5: Life impact (0-3 points)
+        const q5Answers = document.querySelectorAll('input[name="q5_impact"]:checked');
+        if (q5Answers.length > 0 && q5Answers[0].value === "Yes") score += 3;
+        
+        // Question 8: Daily hours (0-4 points)
+        if (answers.includes("6+ hours")) score += 4;
+        else if (answers.includes("3–6 hours")) score += 3;
+        else if (answers.includes("1–3 hours")) score += 1;
+        
+        // Question 9: Bedtime/morning check (0-2 points)
+        const q9Answers = document.querySelectorAll('input[name="q9_check"]:checked');
+        if (q9Answers.length > 0 && q9Answers[0].value === "Yes") score += 2;
+        
+        // Ensure score is non-negative
+        score = Math.max(0, score);
+        
+        // Categorization with detailed levels
+        let result = "No Addiction";
+        let description = "You have healthy mobile usage habits! Keep up the mindful approach.";
+        let color = "#4CAF50"; // Green
+        
+        if (score >= 13) {
+          result = "Critically Addicted";
+          description = "Your mobile usage significantly impacts your life. Consider professional support alongside our challenges.";
+          color = "#f44336"; // Red
+        } else if (score >= 9) {
+          result = "Highly Addicted";
+          description = "You're experiencing strong dependency. Our intensive 4-week program will help you regain balance.";
+          color = "#ff9800"; // Orange
+        } else if (score >= 6) {
+          result = "Moderately Addicted";
+          description = "You show signs of regular overuse. Our structured challenges will help you build healthier habits.";
+          color = "#ffc107"; // Amber
+        } else if (score >= 3) {
+          result = "Slightly Addicted";
+          description = "You have occasional overuse patterns. Our gentle challenges will help you maintain balance.";
+          color = "#8bc34a"; // Light green
+        } else {
+          result = "No Addiction";
+          description = "You have healthy mobile usage habits! Keep up the mindful approach.";
+          color = "#4CAF50"; // Green
+        }
+
+        // Store results with user-specific key
+        const statusKey = username ? `addictionStatus_${username}` : "addictionStatus";
+        const scoreKey = username ? `addictionScore_${username}` : "addictionScore";
+        
+        localStorage.setItem(statusKey, result);
+        localStorage.setItem(scoreKey, score.toString());
+        localStorage.setItem("addictionStatus", result); // Keep for backward compatibility
+        
+        // Show detailed result in a centered container
+        showQuizResultModal({
+          result,
+          score,
+          description,
+          onContinue: () => {
+            window.location.href = "recovery.html";
+          }
+        });
+      } catch (error) {
+        console.error("Error submitting quiz:", error);
+        alert("An error occurred. Please try again.");
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit & continue";
+        }
+      }
+    }
+    
+    function showQuizResultModal({ result, score, description, onContinue }) {
+      const overlay = document.createElement("div");
+      overlay.className = "result-overlay";
+      overlay.innerHTML = `
+        <div class="result-modal">
+          <h2>Your Assessment Result</h2>
+          <div class="result-badge">${result}</div>
+          <p class="result-score">Score: <strong>${score}/18</strong></p>
+          <p class="result-description">${description}</p>
+          <button type="button" class="btn-primary result-continue">Continue to Recovery Plan</button>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const continueBtn = overlay.querySelector(".result-continue");
+      continueBtn.addEventListener("click", () => {
+        overlay.classList.add("closing");
+        setTimeout(() => {
+          if (document.body.contains(overlay)) {
+            document.body.removeChild(overlay);
+          }
+          if (typeof onContinue === "function") {
+            onContinue();
+          }
+        }, 300);
+      });
+    }
+  </script>
+</head>
+<body data-page="quiz">
+  <header class="navbar" id="navbar"></header>
+
+  <main>
+    <div class="quiz-container">
+      <h2 style="text-align:center;margin-top:0;">Mindful use check-in</h2>
+      <p style="color:var(--pastel-muted);text-align:center;">Answer honestly—your sapling grows with every insight.</p>
+      <form id="quizForm">
+        <label>
+          <span>1. Which mobile app tends to pull you in the most?</span>
+          <input type="text" name="q1_app" placeholder="e.g. Instagram, YouTube">
+        </label>
+
+        <label>
+          <span>2. How long have you been using it regularly?</span>
+          <select name="q2_duration">
+            <option value="Less than a month">Less than a month</option>
+            <option value="3 months">3 months</option>
+            <option value="6 months">6 months</option>
+            <option value="A year">A year</option>
+            <option value="More than a year">More than a year</option>
+          </select>
+        </label>
+
+        <div>
+          <p>3. How do you feel when you can’t access it?</p>
+          <div class="quiz-options">
+            <label><input type="checkbox" name="q3_feelings" value="Anxious"> Anxious</label>
+            <label><input type="checkbox" name="q3_feelings" value="Relaxed"> Relieved / relaxed</label>
+            <label><input type="checkbox" name="q3_feelings" value="Irritated"> Irritated</label>
+          </div>
+        </div>
+
+        <div>
+          <p>4. Have you tried to reduce your screen time recently?</p>
+          <div class="quiz-options inline">
+            <label><input type="radio" name="q4_attempt" value="Yes"> Yes</label>
+            <label><input type="radio" name="q4_attempt" value="No"> No</label>
+          </div>
+        </div>
+
+        <div>
+          <p>5. Is it impacting your sleep, focus, or relationships?</p>
+          <div class="quiz-options inline">
+            <label><input type="radio" name="q5_impact" value="Yes"> Yes</label>
+            <label><input type="radio" name="q5_impact" value="No"> No</label>
+          </div>
+        </div>
+
+        <label>
+          <span>6. What benefit do you usually seek when you open it?</span>
+          <textarea name="q6_benefit" placeholder="Connection, relaxation, inspiration, etc."></textarea>
+        </label>
+
+        <div>
+          <p>7. Are you open to mindful challenges to rebalance your usage?</p>
+          <div class="quiz-options inline">
+            <label><input type="radio" name="q7_openness" value="Yes"> Absolutely</label>
+            <label><input type="radio" name="q7_openness" value="No"> Not yet</label>
+          </div>
+        </div>
+
+        <label>
+          <span>8. How many hours each day do you spend on your phone?</span>
+          <select name="q8_hours">
+            <option value="Less than 1 hour">Less than 1 hour</option>
+            <option value="1–3 hours">1–3 hours</option>
+            <option value="3–6 hours">3–6 hours</option>
+            <option value="6+ hours">6+ hours</option>
+          </select>
+        </label>
+
+        <div>
+          <p>9. Do you check your phone right before bed or immediately when you wake up?</p>
+          <div class="quiz-options inline">
+            <label><input type="radio" name="q9_check" value="Yes"> Yes</label>
+            <label><input type="radio" name="q9_check" value="No"> No</label>
+          </div>
+        </div>
+
+        <button type="button" id="submitQuizBtn" class="btn-primary" style="width:100%;">Submit & continue</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>
+-----------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Weekly Plan</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body data-page="recovery">
+  <header class="navbar" id="navbar"></header>
+
+  <main class="content" style="max-width:1100px;margin:0 auto;">
+    <section class="hero-card" style="text-align:left;margin-top:42px;">
+      <span class="pill">Week-by-week mindful challenges</span>
+      <h1 style="margin-bottom:12px;">Nurture your recovery tree</h1>
+      <p>Your personalized plan adapts to how you’re feeling. Toggle a challenge when you complete it and watch your sapling transform.</p>
+      <div style="margin-top:24px;color:var(--pastel-muted);" id="statusSummary">
+        Your current status: <strong id="statusLabel">Mindful</strong>
+      </div>
+    </section>
+
+    <section class="progress-wrapper">
+      <h2 class="section-title">My weekly journeys</h2>
+      <p style="margin-bottom:24px;color:var(--pastel-muted);">Tap a week to open your daily focus tasks. Everything you complete syncs with your tree on the home page.</p>
+      <div id="feedbackMessage" style="display:none;margin-bottom:18px;padding:14px 18px;border-radius:var(--radius-md);background:rgba(198,230,201,0.35);color:var(--pastel-text);"></div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
+        <span id="progressText" style="font-weight:600;">0% completed</span>
+        <span id="challengeCount" style="color:var(--pastel-muted);">0 of 28 mindful moments logged</span>
+      </div>
+      <div class="card-grid" id="weeksGrid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+
+  <script>
+    const plans = {
+      1: ["Limit screen time to 2 hours", "Avoid phone for the first hour after waking", "Take a 15-minute mindful walk", "Read a chapter of a book", "Meditate for 10 minutes", "Have an offline conversation", "Reflect in your journal"],
+      2: ["Schedule a phone-free morning", "Practice a favorite hobby offline", "Keep the phone away during meals", "Write gratitude notes", "Meditate for 15 minutes", "Move your body for 20 minutes", "Plan a family / friend catch-up"],
+      3: ["Plan a half-day digital detox", "Mute non-essential notifications", "List three joys beyond the screen", "Call someone you miss", "Host a tech-free evening", "Cook or create something from scratch", "Sleep 30 minutes earlier"],
+      4: ["Review your month of wins", "Reduce usage by another 30%", "Enjoy an offline weekend activity", "Encourage a friend on their journey", "Sketch future goals", "Celebrate your biggest win", "Share your story with the community"]
+    };
+
+    const weeksGrid = document.getElementById("weeksGrid");
+    const feedbackMessage = document.getElementById("feedbackMessage");
+    const statusLabel = document.getElementById("statusLabel");
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Get user-specific status
+      const username = localStorage.getItem("currentUser");
+      const statusKey = username ? `addictionStatus_${username}` : "addictionStatus";
+      const status = localStorage.getItem(statusKey) || localStorage.getItem("addictionStatus");
+      
+      if (status) {
+        statusLabel.textContent = status;
+        
+        // Color code based on addiction level
+        const statusColors = {
+          "No Addiction": "#4CAF50",
+          "Slightly Addicted": "#8bc34a",
+          "Moderately Addicted": "#ffc107",
+          "Highly Addicted": "#ff9800",
+          "Critically Addicted": "#f44336"
+        };
+        
+        if (statusColors[status]) {
+          statusLabel.style.color = statusColors[status];
+          statusLabel.style.fontWeight = "600";
+        }
+      }
+      
+      renderWeeks();
+      BloomApp.updateProgressUI();
+    });
+
+    function getUserProgressKey() {
+      const currentUser = localStorage.getItem("currentUser");
+      return currentUser ? `recoveryProgress_${currentUser}` : "recoveryProgress";
+    }
+
+    function renderWeeks() {
+      const progressKey = getUserProgressKey();
+      const progress = JSON.parse(localStorage.getItem(progressKey) || "{}");
+      weeksGrid.innerHTML = "";
+
+      Object.keys(plans).forEach(week => {
+        const container = document.createElement("div");
+        container.className = "info-card";
+
+        const header = document.createElement("h3");
+        header.style.cssText = "display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-top:0;";
+        header.innerHTML = `
+          <span>Week ${week}</span>
+          <span style="font-size:14px;color:var(--pastel-muted);" id="weekSummary${week}"></span>
+        `;
+        header.addEventListener("click", () => toggleWeek(week));
+
+        const weekBody = document.createElement("div");
+        weekBody.className = "week-body";
+        weekBody.id = `weekBody${week}`;
+        weekBody.style.cssText = "display:none;margin-top:18px;";
+
+        container.appendChild(header);
+        container.appendChild(weekBody);
+        weeksGrid.appendChild(container);
+        updateWeekSummary(week, progress);
+      });
+    }
+
+    function toggleWeek(week) {
+      const body = document.getElementById(`weekBody${week}`);
+      if (!body) return;
+
+      if (body.dataset.loaded !== "true") {
+        populateWeek(week, body);
+        body.dataset.loaded = "true";
+      }
+
+      // Toggle visibility - but keep it open if it's already open
+      const isCurrentlyHidden = body.style.display === "none" || body.style.display === "";
+      body.style.display = isCurrentlyHidden ? "block" : "none";
+    }
+
+    function populateWeek(week, container) {
+      const progressKey = getUserProgressKey();
+      const progress = JSON.parse(localStorage.getItem(progressKey) || "{}");
+      const completedWeek = progress[week] || [];
+      container.innerHTML = "";
+
+      plans[week].forEach((task, index) => {
+        const isDone = completedWeek[index]?.completed || false;
+        const row = document.createElement("label");
+        row.style.cssText = "display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;cursor:pointer;";
+        
+        // Stop event propagation to prevent week from closing when clicking checkbox
+        row.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+
+        row.innerHTML = `
+          <input type="checkbox" ${isDone ? "checked" : ""} data-week="${week}" data-day="${index}">
+          <span>${task}</span>
+        `;
+        container.appendChild(row);
+      });
+
+      container.querySelectorAll("input[type='checkbox']").forEach(box => {
+        // Stop event propagation on checkbox clicks
+        box.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+        
+        box.addEventListener("change", event => {
+          event.stopPropagation();
+          const { week, day } = event.target.dataset;
+          saveProgress(week, day, event.target.checked);
+        });
+      });
+    }
+
+    function saveProgress(week, day, completed) {
+      const progressKey = getUserProgressKey();
+      const data = JSON.parse(localStorage.getItem(progressKey) || "{}");
+      if (!data[week]) data[week] = [];
+      data[week][day] = { completed };
+      localStorage.setItem(progressKey, JSON.stringify(data));
+
+      updateWeekSummary(week, data);
+      
+      // Calculate new progress
+      const { completed: newCompleted } = BloomApp.calculateProgress();
+      
+      // Show celebration if challenge was completed
+      if (completed) {
+        // Trigger leaf shower
+        if (window.BloomApp && window.BloomApp.createLeafShower) {
+          window.BloomApp.createLeafShower();
+        }
+        
+        // Show tree growth celebration after a brief delay
+        setTimeout(() => {
+          if (window.BloomApp && window.BloomApp.showTreeCelebration) {
+            window.BloomApp.showTreeCelebration(null, newCompleted);
+          }
+        }, 800);
+      }
+      
+      BloomApp.updateProgressUI();
+      showFeedback(completed ? "Nice! Your tree just grew a little more." : "No worries, try again tomorrow.");
+    }
+
+    function updateWeekSummary(week, data) {
+      const summaryEl = document.getElementById(`weekSummary${week}`);
+      if (!summaryEl) return;
+
+      const entries = data[week] || [];
+      const completed = entries.filter(item => item?.completed).length;
+      summaryEl.textContent = `${completed}/7 done`;
+    }
+
+    function showFeedback(message) {
+      if (!feedbackMessage) return;
+      feedbackMessage.textContent = message;
+      feedbackMessage.style.display = "block";
+      clearTimeout(showFeedback.timeout);
+      showFeedback.timeout = setTimeout(() => {
+        feedbackMessage.style.display = "none";
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
+--------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Sign Up</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    function signupUser() {
+      const name = document.getElementById("name").value.trim();
+      const age = document.getElementById("age").value.trim();
+      const gender = document.getElementById("gender").value;
+      const username = document.getElementById("username").value.trim();
+
+      if (!name || !age || !gender || !username) {
+        alert("Please fill in every field so we can personalize your journey.");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const exists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
+
+      if (exists) {
+        alert("That username is already blooming. Try another or log in instead.");
+        return;
+      }
+
+      users.push({ name, age, gender, username, answers: [] });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Welcome to Bloom Recovery! Please log in to begin your mindful challenges.");
+      window.location.href = "login.html";
+    }
+  </script>
+</head>
+<body data-page="signup">
+  <header class="navbar" id="navbar"></header>
+
+  <main>
+    <div class="form-card">
+      <h2>Create your Bloom profile</h2>
+      <p style="color:var(--pastel-muted);margin-bottom:24px;">We’ll tailor weekly nudges and challenges around you.</p>
+      <input id="name" placeholder="Full name">
+      <input id="age" type="number" min="12" placeholder="Age">
+      <select id="gender">
+        <option value="">Select identity</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+        <option value="Non-binary">Non-binary</option>
+        <option value="Prefer not to say">Prefer not to say</option>
+        <option value="Self-describe">Self describe</option>
+      </select>
+      <input id="username" placeholder="Create username">
+      <button class="btn-primary" style="width:100%;" onclick="signupUser()">Sign Up</button>
+      <p style="color:var(--pastel-muted);font-size:14px;margin-top:18px;">
+        Already tending your tree? <a class="nav-link" style="color:var(--pastel-text);" href="login.html">Log in</a>
+    </p>
+  </div>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>
+------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | View Data</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    function loadData() {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const dataDiv = document.getElementById("dataContainer");
+      const jsonBox = document.getElementById("jsonBox");
+      const emptyState = document.getElementById("emptyState");
+
+      if (users.length === 0) {
+        dataDiv.innerHTML = "";
+        emptyState.style.display = "block";
+        jsonBox.value = "[]";
+        return;
+      }
+
+      emptyState.style.display = "none";
+      dataDiv.innerHTML = users.map((user, index) => `
+        <div class="data-card">
+          <h3 style="margin-top:0;">${user.name || "Bloom user"} <span style="color:var(--pastel-muted);font-size:14px;">@${user.username}</span></h3>
+          <p><strong>Age:</strong> ${user.age || "—"}</p>
+          <p><strong>Identity:</strong> ${user.gender || "—"}</p>
+          <p><strong>Quiz reflections:</strong> ${user.answers && user.answers.length ? user.answers.join(", ") : "No answers recorded yet."}</p>
+          </div>
+      `).join("");
+
+      jsonBox.value = JSON.stringify(users, null, 2);
+    }
+
+    function clearData() {
+      if (confirm("Are you sure you want to clear all locally stored user data? This cannot be undone.")) {
+        localStorage.clear();
+        loadData();
+        BloomApp.updateProgressUI();
+      }
+    }
+  </script>
+</head>
+<body data-page="data" onload="loadData()">
+  <header class="navbar" id="navbar"></header>
+
+  <main class="content" style="max-width:1100px;margin:0 auto;">
+    <section class="hero-card" style="margin-top:40px;">
+      <span class="pill">Transparent & exportable</span>
+      <h1>Your stored recovery data</h1>
+      <p>All user profiles are stored in the browser in human-readable JSON so you remain in control. Export, review, or clear anytime.</p>
+      <div style="margin-top:18px;color:var(--pastel-muted);font-size:14px;">
+        Tip: Copy the JSON block below to share progress with a coach or save a backup.
+      </div>
+    </section>
+
+    <div id="emptyState" class="info-card" style="display:none;margin-top:24px;">
+      <h3>No data yet</h3>
+      <p>Once you sign up and complete the quiz, your profile will appear here in JSON format.</p>
+    </div>
+
+    <section class="data-container" id="dataContainer"></section>
+
+    <section class="progress-wrapper" style="margin-top:32px;">
+      <h2 class="section-title">JSON export</h2>
+      <textarea id="jsonBox" class="json-viewer" readonly></textarea>
+      <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;">
+        <button class="btn-outline" onclick="navigator.clipboard.writeText(document.getElementById('jsonBox').value).then(()=>alert('Copied to clipboard!'))">Copy JSON</button>
+        <button class="btn-primary" onclick="clearData()">Clear all data</button>
+  </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>
+-------------------------------------------------------------------------
+const TOTAL_CHALLENGES = 28;
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await ensureSeedUsers();
+  renderNavbar();
+  wireGlobalActions();
+  
+  // Only initialize tree and progress UI on pages that have them
+  const treeStage = document.getElementById("treeStage");
+  if (treeStage) {
+    initializeTree();
+    updateProgressUI();
+  }
+  
+  setYearFooter();
+});
+
+function ensureSeedUsers() {
+  if (localStorage.getItem("users")) {
+    return Promise.resolve();
+  }
+
+  return fetch("data/users.json")
+    .then(response => (response.ok ? response.json() : null))
+    .then(data => {
+      if (data && Array.isArray(data)) {
+        localStorage.setItem("users", JSON.stringify(data));
+      }
+    })
+    .catch(() => {
+      console.warn("Could not seed users from JSON.");
+    });
+}
+
+function renderNavbar() {
+  const navbar = document.getElementById("navbar");
+  if (!navbar) return;
+
+  navbar.innerHTML = `
+    <div class="nav-container">
+      <a class="brand" href="index.html">
+        <span class="brand-icon">🌱</span>
+        <span>Bloom Recovery</span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link" href="index.html">Home</a>
+        ${getAuthMarkup()}
+      </div>
+    </div>
+  `;
+
+  const logoutBtn = document.querySelector("[data-action='logout']");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", handleLogout);
+  }
+}
+
+function getAuthMarkup() {
+  const loggedIn = localStorage.getItem("loggedIn") === "true";
+  if (loggedIn) {
+    const currentUser = localStorage.getItem("currentUser") || "You";
+    return `
+      <span class="nav-link" style="pointer-events:none;">Hi, ${sanitize(currentUser)}</span>
+      <button class="btn-outline" data-action="logout">Logout</button>
+    `;
+  }
+
+  return `
+    <a class="nav-link" href="login.html">Login</a>
+    <a class="btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;" href="signup.html">Sign Up</a>
+  `;
+}
+
+function handleLogout() {
+  localStorage.setItem("loggedIn", "false");
+  localStorage.removeItem("currentUser");
+  alert("Logged out successfully. Come back soon!");
+  window.location.href = "index.html";
+}
+
+function wireGlobalActions() {
+  document.querySelectorAll("[data-action='start-journey']").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const loggedIn = localStorage.getItem("loggedIn") === "true";
+      window.location.href = loggedIn ? "quiz.html" : "login.html";
+    });
+  });
+
+  document.querySelectorAll("[data-action='open-settings']").forEach(btn => {
+    btn.addEventListener("click", () => {
+      alert("Personal reminder settings are coming soon. For now, schedule your mindful breaks in your favorite planner!");
+    });
+  });
+}
+
+function getUserProgressKey() {
+  const currentUser = localStorage.getItem("currentUser");
+  return currentUser ? `recoveryProgress_${currentUser}` : "recoveryProgress";
+}
+
+function updateProgressUI() {
+  const progressFill = document.getElementById("progressFill");
+  const progressText = document.getElementById("progressText");
+  const challengeCount = document.getElementById("challengeCount");
+  const treeStage = document.getElementById("treeStage");
+
+  if (!progressFill && !treeStage) return;
+
+  const { completed, percent } = calculateProgress();
+
+  if (progressFill) {
+    progressFill.style.width = `${percent}%`;
+  }
+  if (progressText) {
+    progressText.textContent = `${percent}% completed`;
+  }
+  if (challengeCount) {
+    challengeCount.textContent = `${completed} of ${TOTAL_CHALLENGES} mindful moments logged`;
+  }
+  if (treeStage) {
+    const stage = deriveTreeStage(percent, completed);
+    treeStage.setAttribute("data-stage", stage);
+    animateTreeGrowth(treeStage, completed, false);
+  }
+}
+
+function calculateProgress() {
+  const progressKey = getUserProgressKey();
+  const progress = JSON.parse(localStorage.getItem(progressKey) || "{}");
+  let completed = 0;
+
+  Object.values(progress).forEach(weekArray => {
+    if (!Array.isArray(weekArray)) return;
+
+    weekArray.forEach(day => {
+      if (day?.completed) {
+        completed += 1;
+      }
+    });
+  });
+
+  const percent = Math.min(100, Math.round((completed / TOTAL_CHALLENGES) * 100));
+  return { completed, percent };
+}
+
+function initializeTreeElements(leafContainer, budsContainer, flowersContainer) {
+  if (!leafContainer || !budsContainer || !flowersContainer) return;
+  
+  // Generate 28 leaves with more natural, tree-like distribution
+  const leafPositions = [
+    // Top canopy (sapling stage - first 10)
+    { top: '15%', left: '48%', rotate: '-12deg', size: '14px' },
+    { top: '18%', left: '35%', rotate: '25deg', size: '16px' },
+    { top: '20%', left: '62%', rotate: '-28deg', size: '15px' },
+    { top: '22%', left: '28%', rotate: '18deg', size: '17px' },
+    { top: '24%', left: '55%', rotate: '-15deg', size: '16px' },
+    { top: '26%', left: '70%', rotate: '22deg', size: '15px' },
+    { top: '28%', left: '42%', rotate: '-20deg', size: '18px' },
+    { top: '30%', left: '32%', rotate: '30deg', size: '16px' },
+    { top: '32%', left: '65%', rotate: '-25deg', size: '17px' },
+    { top: '34%', left: '50%', rotate: '15deg', size: '18px' },
+    // Middle canopy (grown stage - next 10)
+    { top: '36%', left: '38%', rotate: '-18deg', size: '19px' },
+    { top: '38%', left: '58%', rotate: '28deg', size: '18px' },
+    { top: '40%', left: '30%', rotate: '-22deg', size: '20px' },
+    { top: '42%', left: '68%', rotate: '20deg', size: '19px' },
+    { top: '44%', left: '45%', rotate: '-25deg', size: '21px' },
+    { top: '46%', left: '52%', rotate: '18deg', size: '20px' },
+    { top: '48%', left: '35%', rotate: '-30deg', size: '19px' },
+    { top: '50%', left: '60%', rotate: '22deg', size: '21px' },
+    { top: '52%', left: '28%', rotate: '-20deg', size: '20px' },
+    { top: '54%', left: '72%', rotate: '25deg', size: '19px' },
+    // Lower canopy (bloom stage - last 8)
+    { top: '56%', left: '42%', rotate: '-18deg', size: '22px' },
+    { top: '58%', left: '55%', rotate: '20deg', size: '21px' },
+    { top: '60%', left: '33%', rotate: '-24deg', size: '23px' },
+    { top: '62%', left: '65%', rotate: '22deg', size: '22px' },
+    { top: '64%', left: '48%', rotate: '-20deg', size: '24px' },
+    { top: '66%', left: '38%', rotate: '26deg', size: '23px' },
+    { top: '68%', left: '58%', rotate: '-22deg', size: '25px' },
+    { top: '70%', left: '50%', rotate: '24deg', size: '24px' }
+  ];
+  
+  // Generate flower positions (appear from challenge 15+)
+  const flowerPositions = [
+    { top: '22%', left: '40%', size: '12px', color: '#ffb3d9' },
+    { top: '28%', left: '58%', size: '14px', color: '#ff99cc' },
+    { top: '35%', left: '35%', size: '13px', color: '#ffb3d9' },
+    { top: '42%', left: '62%', size: '15px', color: '#ff99cc' },
+    { top: '48%', left: '45%', size: '14px', color: '#ffb3d9' },
+    { top: '54%', left: '55%', size: '16px', color: '#ff99cc' },
+    { top: '60%', left: '38%', size: '15px', color: '#ffb3d9' },
+    { top: '65%', left: '60%', size: '17px', color: '#ff99cc' }
+  ];
+  
+  // Generate bud positions (appear from challenge 8+)
+  const budPositions = [
+    { top: '20%', left: '50%', size: '10px' },
+    { top: '30%', left: '40%', size: '11px' },
+    { top: '38%', left: '60%', size: '10px' },
+    { top: '46%', left: '35%', size: '12px' },
+    { top: '52%', left: '65%', size: '11px' },
+    { top: '58%', left: '48%', size: '13px' }
+  ];
+  
+  // Initialize leaves
+  leafContainer.innerHTML = '';
+  leafPositions.forEach((pos, index) => {
+    const leaf = document.createElement('div');
+    leaf.className = 'tree-leaf';
+    leaf.style.cssText = `
+      position: absolute;
+      top: ${pos.top};
+      left: ${pos.left};
+      width: ${pos.size};
+      height: ${parseInt(pos.size) + 4}px;
+      background: linear-gradient(135deg, #a8e6a3 0%, #7bc87a 50%, #6ab86a 100%);
+      border-radius: 50% 0 50% 0;
+      transform: rotate(${pos.rotate}) scale(0);
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      box-shadow: 0 3px 8px rgba(123, 200, 122, 0.5);
+      z-index: 2;
+    `;
+    leafContainer.appendChild(leaf);
+  });
+  
+  // Initialize buds
+  budsContainer.innerHTML = '';
+  budPositions.forEach((pos) => {
+    const bud = document.createElement('span');
+    bud.className = 'tree-bud';
+    bud.style.cssText = `
+      position: absolute;
+      top: ${pos.top};
+      left: ${pos.left};
+      width: ${pos.size};
+      height: ${pos.size};
+      border-radius: 50%;
+      background: radial-gradient(circle, #e5f7ff, #a6dcef 75%, transparent 75%);
+      box-shadow: 0 4px 10px rgba(166, 220, 239, 0.4);
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 3;
+    `;
+    budsContainer.appendChild(bud);
+  });
+  
+  // Initialize flowers
+  flowersContainer.innerHTML = '';
+  flowerPositions.forEach((pos) => {
+    const flower = document.createElement('span');
+    flower.className = 'tree-flower';
+    flower.style.cssText = `
+      position: absolute;
+      top: ${pos.top};
+      left: ${pos.left};
+      width: ${pos.size};
+      height: ${pos.size};
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffe5f2, ${pos.color} 70%, #ff99cc 100%);
+      box-shadow: 0 4px 12px rgba(255, 153, 204, 0.5);
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      z-index: 4;
+    `;
+    flowersContainer.appendChild(flower);
+  });
+}
+
+function initializeTree() {
+  const treeStage = document.getElementById("treeStage");
+  if (!treeStage) return;
+  
+  const leafContainer = treeStage.querySelector('.tree-leaf-container');
+  const budsContainer = treeStage.querySelector('.tree-buds');
+  const flowersContainer = treeStage.querySelector('.tree-flowers');
+  
+  initializeTreeElements(leafContainer, budsContainer, flowersContainer);
+}
+
+function animateTreeGrowth(treeStage, completed, showCelebration = false) {
+  const leaves = treeStage.querySelectorAll('.tree-leaf');
+  const buds = treeStage.querySelectorAll('.tree-bud');
+  const flowers = treeStage.querySelectorAll('.tree-flower');
+  const totalLeaves = 28;
+  // Start with 3 initial leaves for sapling, then add one per challenge
+  const initialLeaves = 3;
+  // Total leaves to show: 3 initial + completed challenges (max 28 total)
+  const leavesToShow = Math.min(initialLeaves + completed, totalLeaves);
+  
+  // Animate leaves (3 initial + one per challenge)
+  leaves.forEach((leaf, index) => {
+    const currentTransform = leaf.style.transform || '';
+    const rotateMatch = currentTransform.match(/rotate\([^)]+\)/);
+    const rotate = rotateMatch ? rotateMatch[0] : '';
+    
+    if (index < leavesToShow) {
+      const isInitialLeaf = index < initialLeaves;
+      if (isInitialLeaf) {
+        // Initial sapling leaves - show immediately
+        leaf.style.opacity = '1';
+        leaf.style.transform = `${rotate} scale(1)`.trim();
+        if (completed > 0) {
+          // Animate if not the first load
+          leaf.style.animation = 'leafGrow 0.6s ease-out both';
+        }
+      } else {
+        // Additional leaves from challenges - animate with delay
+        const challengeIndex = index - initialLeaves;
+        setTimeout(() => {
+          leaf.style.opacity = '1';
+          leaf.style.transform = `${rotate} scale(1)`.trim();
+          leaf.style.animation = 'leafGrow 0.6s ease-out both';
+        }, challengeIndex * 50);
+      }
+    } else {
+      // Hide leaves beyond what should be shown
+      if (index >= initialLeaves) {
+        leaf.style.opacity = '0';
+        leaf.style.transform = `${rotate} scale(0)`.trim();
+        leaf.style.animation = 'none';
+      }
+    }
+  });
+  
+  // Show buds starting from challenge 8
+  const budsToShow = Math.max(0, Math.min(buds.length, Math.floor((completed - 7) / 2)));
+  buds.forEach((bud, index) => {
+    if (index < budsToShow && completed >= 8) {
+      setTimeout(() => {
+        bud.style.opacity = '1';
+        bud.style.transform = 'scale(1)';
+        bud.style.animation = 'budBloom 0.8s ease-out both';
+      }, (index + 8) * 60);
+    } else {
+      bud.style.opacity = '0';
+      bud.style.transform = 'scale(0)';
+    }
+  });
+  
+  // Show flowers starting from challenge 15
+  const flowersToShow = Math.max(0, Math.min(flowers.length, Math.floor((completed - 14) / 2)));
+  flowers.forEach((flower, index) => {
+    if (index < flowersToShow && completed >= 15) {
+      setTimeout(() => {
+        flower.style.opacity = '1';
+        flower.style.transform = 'scale(1)';
+        flower.style.animation = 'flowerBloom 1s ease-out both';
+      }, (index + 15) * 70);
+    } else {
+      flower.style.opacity = '0';
+      flower.style.transform = 'scale(0)';
+    }
+  });
+  
+  // Show celebration animation if requested
+  if (showCelebration) {
+    showTreeCelebration(treeStage, completed);
+  }
+}
+
+function showTreeCelebration(treeStage, completed) {
+  // Create leaf shower effect
+  createLeafShower();
+  
+  // Calculate percentage for stage
+  const percent = Math.round((completed / 28) * 100);
+  const stage = deriveTreeStage(percent, completed);
+  
+  // Show celebration overlay with tree growth animation
+  const overlay = document.createElement('div');
+  overlay.className = 'celebration-overlay';
+  overlay.innerHTML = `
+    <div class="celebration-content">
+      <div class="celebration-tree-container">
+        <div class="tree-stage celebration-tree" data-stage="${stage}">
+          <div class="tree-visual">
+            <div class="tree-trunk"></div>
+            <div class="tree-leaves"></div>
+            <div class="tree-leaf-container"></div>
+            <div class="tree-buds"></div>
+            <div class="tree-flowers"></div>
+            <div class="tree-pot"></div>
+          </div>
+        </div>
+      </div>
+      <h2 class="celebration-title">🌱 Your Tree is Growing! 🌱</h2>
+      <p class="celebration-message">Amazing progress! Keep nurturing your recovery journey.</p>
+      <div class="celebration-progress">
+        <span>${completed} of 28 challenges completed</span>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(overlay);
+  
+  // Initialize and animate the celebration tree
+  setTimeout(() => {
+    const celebrationTree = overlay.querySelector('.celebration-tree');
+    if (celebrationTree) {
+      // Initialize tree elements for celebration
+      const leafContainer = celebrationTree.querySelector('.tree-leaf-container');
+      const budsContainer = celebrationTree.querySelector('.tree-buds');
+      const flowersContainer = celebrationTree.querySelector('.tree-flowers');
+      
+      if (leafContainer && budsContainer && flowersContainer) {
+        // Use the same initialization logic but for celebration tree
+        initializeTreeElements(leafContainer, budsContainer, flowersContainer);
+        animateTreeGrowth(celebrationTree, completed, false);
+      }
+    }
+  }, 100);
+  
+  // Remove overlay after ~4 seconds (within requested 3-5 second window)
+  setTimeout(() => {
+    overlay.style.opacity = '0';
+    overlay.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      if (document.body.contains(overlay)) {
+        document.body.removeChild(overlay);
+      }
+    }, 500);
+  }, 4000);
+}
+
+function createLeafShower() {
+  const showerContainer = document.createElement('div');
+  showerContainer.className = 'leaf-shower-container';
+  document.body.appendChild(showerContainer);
+  
+  // Create 30-40 falling leaves
+  for (let i = 0; i < 35; i++) {
+    const leaf = document.createElement('div');
+    leaf.className = 'shower-leaf';
+    leaf.style.cssText = `
+      position: fixed;
+      top: -20px;
+      left: ${Math.random() * 100}%;
+      width: ${12 + Math.random() * 8}px;
+      height: ${16 + Math.random() * 8}px;
+      background: linear-gradient(135deg, #a8e6a3, #7bc87a);
+      border-radius: 50% 0 50% 0;
+      transform: rotate(${Math.random() * 360}deg);
+      opacity: ${0.6 + Math.random() * 0.4};
+      animation: leafFall ${3 + Math.random() * 2}s linear forwards;
+      z-index: 9999;
+      pointer-events: none;
+    `;
+    showerContainer.appendChild(leaf);
+  }
+  
+  // Remove shower after animation
+  setTimeout(() => {
+    showerContainer.remove();
+  }, 5000);
+}
+
+function deriveTreeStage(percent, completed) {
+  // Always start as sapling, even at 0%
+  if (completed === 0) return "sapling";
+  if (percent < 35) return "sapling";
+  if (percent < 75) return "grown";
+  return "bloom";
+}
+
+function setYearFooter() {
+  const yearEl = document.getElementById("year");
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+}
+
+function sanitize(value) {
+  const div = document.createElement("div");
+  div.textContent = value;
+  return div.innerHTML;
+}
+
+// Utility exposed for other pages when needed
+window.BloomApp = {
+  updateProgressUI,
+  calculateProgress,
+  getUserProgressKey,
+  showTreeCelebration,
+  createLeafShower
+};
+
+--------------------------------------------------------------------
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+  --pastel-primary: #a6dcef;
+  --pastel-secondary: #f7d6e0;
+  --pastel-accent: #c8e6c9;
+  --pastel-text: #3a3a3a;
+  --pastel-muted: #6b6b6b;
+  --surface: #ffffff;
+  --surface-alt: #fef6f9;
+  --nav-height: 64px;
+  --sidebar-width: 240px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-soft: 0 18px 40px rgba(166, 220, 239, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', Arial, sans-serif;
+  background: linear-gradient(135deg, #fefcff 0%, #f1fbff 40%, #fef6f9 100%);
+  color: var(--pastel-text);
+}
+
+a {
+  color: inherit;
+}
+
+.navbar {
+  height: var(--nav-height);
+  background: rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(166, 220, 239, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar .nav-container {
+  width: min(1100px, 92%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: var(--pastel-text);
+  text-decoration: none;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--pastel-primary), var(--pastel-secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 15px;
+}
+
+.nav-link {
+  color: var(--pastel-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--pastel-text);
+  transform: translateY(-1px);
+}
+
+.btn-primary,
+.btn-outline {
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--pastel-primary), var(--pastel-secondary));
+  color: var(--pastel-text);
+  box-shadow: 0 8px 18px rgba(166, 220, 239, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(166, 220, 239, 0.7);
+  color: var(--pastel-muted);
+}
+
+.btn-primary:hover,
+.btn-outline:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(166, 220, 239, 0.35);
+}
+
+.layout {
+  display: flex;
+  min-height: calc(100vh - var(--nav-height));
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  padding: 32px 24px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(166, 220, 239, 0.4);
+  position: sticky;
+  top: var(--nav-height);
+  align-self: flex-start;
+  height: calc(100vh - var(--nav-height));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sidebar h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--pastel-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sidebar-link {
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  color: var(--pastel-text);
+  background: rgba(198, 230, 201, 0.2);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.sidebar-link:hover {
+  transform: translateX(6px);
+  background: rgba(198, 230, 201, 0.38);
+}
+
+.content {
+  flex: 1;
+  padding: 48px clamp(32px, 5vw, 64px);
+}
+
+.hero-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(32px, 4vw, 48px);
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.hero-card h1 {
+  margin-top: 0;
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--pastel-text);
+}
+
+.hero-card p {
+  color: var(--pastel-muted);
+  font-size: 17px;
+  margin-bottom: 28px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.info-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 12px 28px rgba(198, 230, 201, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.info-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(166, 220, 239, 0.35), transparent 60%);
+  pointer-events: none;
+}
+
+.info-card h3 {
+  margin-top: 0;
+}
+
+.media-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  min-height: 260px;
+  display: flex;
+  align-items: flex-end;
+  color: #ffffff;
+}
+
+.media-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9);
+}
+
+.media-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(46, 46, 46, 0.65));
+}
+
+.media-card .media-content {
+  position: relative;
+  padding: 28px;
+  z-index: 1;
+}
+
+.media-card .media-content h3 {
+  margin: 0 0 8px;
+}
+
+.media-card .media-content p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.progress-wrapper {
+  background: var(--surface);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  margin-top: 24px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 16px;
+  background: rgba(166, 220, 239, 0.35);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 18px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(135deg, var(--pastel-secondary), var(--pastel-primary));
+  border-radius: inherit;
+  transition: width 0.6s ease;
+}
+
+.tree-stage {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.tree-visual {
+  width: 280px;
+  height: 320px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.tree-pot {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 60px;
+  background: linear-gradient(180deg, #f3b0c3, #f798b7);
+  border-radius: 12px 12px 30px 30px;
+  box-shadow: 0 10px 18px rgba(247, 152, 183, 0.4);
+}
+
+.tree-trunk {
+  position: absolute;
+  bottom: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 130px;
+  background: linear-gradient(180deg, #8c6b4f, #a47551, #6b5238);
+  border-radius: 12px;
+  opacity: 1;
+  transition: opacity 0.4s ease, height 0.4s ease;
+  box-shadow: 0 4px 12px rgba(107, 82, 56, 0.4);
+  z-index: 2;
+}
+
+.tree-leaves {
+  position: absolute;
+  bottom: 170px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 180px;
+  background: radial-gradient(ellipse at center, rgba(180, 227, 177, 0.3), rgba(134, 200, 139, 0.2) 60%, transparent 80%);
+  filter: drop-shadow(0 14px 22px rgba(134, 200, 139, 0.3));
+  border-radius: 50%;
+  opacity: 0.6;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.tree-buds,
+.tree-flowers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+
+/* Tree starts as sapling - trunk always visible */
+.tree-stage[data-stage="sapling"] .tree-trunk {
+  height: 100px;
+  opacity: 1;
+}
+
+.tree-stage[data-stage="sapling"] .tree-leaves {
+  opacity: 0.5;
+}
+
+.tree-stage[data-stage="grown"] .tree-trunk {
+  height: 120px;
+  opacity: 1;
+}
+
+.tree-stage[data-stage="grown"] .tree-leaves {
+  opacity: 0.75;
+}
+
+.tree-stage[data-stage="bloom"] .tree-trunk {
+  height: 130px;
+  opacity: 1;
+}
+
+.tree-stage[data-stage="bloom"] .tree-leaves {
+  opacity: 1;
+}
+
+.tree-leaf-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+@keyframes leafGrow {
+  0% {
+    transform: scale(0) rotate(var(--leaf-rotate, 0deg));
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.3) rotate(var(--leaf-rotate, 0deg));
+  }
+  100% {
+    transform: scale(1) rotate(var(--leaf-rotate, 0deg));
+    opacity: 1;
+  }
+}
+
+@keyframes budBloom {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes flowerBloom {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(1.5) rotate(180deg);
+  }
+  60% {
+    transform: scale(0.9) rotate(360deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+@keyframes leafFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes celebrationFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.leaf-shower-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  overflow: hidden;
+}
+
+.shower-leaf {
+  box-shadow: 0 2px 6px rgba(123, 200, 122, 0.5);
+}
+
+.celebration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: celebrationFadeIn 0.5s ease-out;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.celebration-content {
+  background: linear-gradient(135deg, #fefcff 0%, #f1fbff 40%, #fef6f9 100%);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: celebrationFadeIn 0.6s ease-out 0.2s both;
+}
+
+.celebration-tree-container {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 350px;
+}
+
+.celebration-tree .tree-visual {
+  transform: scale(1.2);
+}
+
+.celebration-title {
+  font-size: 28px;
+  color: var(--pastel-text);
+  margin: 20px 0 12px;
+  font-weight: 700;
+}
+
+.celebration-message {
+  font-size: 18px;
+  color: var(--pastel-muted);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.celebration-progress {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--pastel-text);
+  padding: 12px 24px;
+  background: rgba(198, 230, 201, 0.35);
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.result-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: celebrationFadeIn 0.35s ease-out;
+}
+
+.result-overlay.closing {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.result-modal {
+  width: min(420px, 90%);
+  background: linear-gradient(135deg, #fefcff 0%, #f1fbff 40%, #fef6f9 100%);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 18px 50px rgba(166, 220, 239, 0.4);
+  animation: celebrationFadeIn 0.4s ease-out;
+}
+
+.result-modal h2 {
+  margin-top: 0;
+  color: var(--pastel-text);
+}
+
+.result-badge {
+  display: inline-block;
+  margin: 16px 0;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--pastel-primary), var(--pastel-secondary));
+  color: var(--pastel-text);
+  font-weight: 600;
+  box-shadow: 0 12px 24px rgba(166, 220, 239, 0.35);
+}
+
+.result-score {
+  font-size: 18px;
+  color: var(--pastel-text);
+  margin-bottom: 12px;
+}
+
+.result-description {
+  color: var(--pastel-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.result-modal .result-continue {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 16px;
+}
+
+.tree-leaf {
+  animation: none;
+}
+
+/* Initial sapling state - show first 3 leaves as starting point */
+.tree-stage[data-stage="sapling"] .tree-leaf:nth-child(-n+3) {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.section-title {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.form-card {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(166, 220, 239, 0.5);
+  background: rgba(255, 255, 255, 0.84);
+  font-family: inherit;
+}
+
+.form-card h2 {
+  margin-top: 0;
+  color: var(--pastel-text);
+}
+
+.quiz-container {
+  max-width: 760px;
+  margin: 40px auto;
+  padding: 34px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.quiz-container p {
+  font-weight: 500;
+  color: var(--pastel-text);
+}
+
+.quiz-container input,
+.quiz-container select,
+.quiz-container textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(166, 220, 239, 0.5);
+  background: rgba(255, 255, 255, 0.84);
+  font-family: inherit;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0 18px;
+}
+
+.quiz-options.inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.quiz-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: var(--pastel-muted);
+}
+
+.quiz-options input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--pastel-secondary);
+}
+
+.cta-row {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.cta-row .btn-primary {
+  min-width: 220px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(198, 230, 201, 0.35);
+  color: var(--pastel-muted);
+  font-weight: 500;
+}
+
+.footer {
+  background: rgba(255, 255, 255, 0.68);
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid rgba(166, 220, 239, 0.4);
+  margin-top: 60px;
+  color: var(--pastel-muted);
+}
+
+.data-container {
+  max-width: 840px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.data-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-soft);
+}
+
+.json-viewer {
+  width: 100%;
+  min-height: 220px;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(166, 220, 239, 0.4);
+  background: #101827;
+  color: #d5f3ff;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+}
+
+@media (max-width: 920px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.78);
+    gap: 12px;
+    padding-bottom: 24px;
+  }
+
+  .content {
+    padding: 32px 24px 48px;
+  }
+}
+
+--------------------------------------------------------------------------------

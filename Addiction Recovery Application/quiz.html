@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Addiction Quiz</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("quizForm");
+      const submitBtn = document.getElementById("submitQuizBtn");
+      
+      // Prevent form submission
+      if (form) {
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          return false;
+        });
+      }
+      
+      // Add click handler to button
+      if (submitBtn) {
+        submitBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          submitQuiz();
+        });
+      }
+    });
+    
+    function submitQuiz() {
+      const username = localStorage.getItem("currentUser");
+      if (!username) {
+        alert("Please log in first so we can save your progress.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      // Disable button to prevent double submission
+      const submitBtn = document.getElementById("submitQuizBtn");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing...";
+      }
+
+      try {
+        // Collect all answers properly
+        const answers = [];
+        const form = document.getElementById("quizForm");
+        
+        if (!form) {
+          alert("Form not found. Please refresh the page.");
+          return;
+        }
+        
+        // Text inputs and textareas
+        form.querySelectorAll('input[type="text"], textarea').forEach(el => {
+          if (el.value?.trim()) answers.push(el.value.trim());
+        });
+        
+        // Select dropdowns
+        form.querySelectorAll('select').forEach(el => {
+          if (el.value) answers.push(el.value);
+        });
+        
+        // Checkboxes (multiple selections)
+        form.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
+          answers.push(el.value);
+        });
+        
+        // Radio buttons (single selection per group)
+        form.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+          answers.push(el.value);
+        });
+
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const userIndex = users.findIndex(u => u.username === username);
+
+        if (userIndex >= 0) {
+          users[userIndex].answers = answers;
+          localStorage.setItem("users", JSON.stringify(users));
+        }
+
+        // Comprehensive scoring system
+        let score = 0;
+        
+        // Question 2: Duration (0-3 points)
+        if (answers.includes("More than a year")) score += 3;
+        else if (answers.includes("A year")) score += 2;
+        else if (answers.includes("6 months")) score += 1;
+        
+        // Question 3: Emotional response (0-4 points)
+        if (answers.includes("Anxious")) score += 2;
+        if (answers.includes("Irritated")) score += 2;
+        if (answers.includes("Relaxed")) score -= 1; // Positive response reduces score
+        
+        // Question 4: Reduction attempts (0-1 points)
+        if (answers.includes("Yes")) score += 1;
+        
+        // Question 5: Life impact (0-3 points)
+        const q5Answers = document.querySelectorAll('input[name="q5_impact"]:checked');
+        if (q5Answers.length > 0 && q5Answers[0].value === "Yes") score += 3;
+        
+        // Question 8: Daily hours (0-4 points)
+        if (answers.includes("6+ hours")) score += 4;
+        else if (answers.includes("3–6 hours")) score += 3;
+        else if (answers.includes("1–3 hours")) score += 1;
+        
+        // Question 9: Bedtime/morning check (0-2 points)
+        const q9Answers = document.querySelectorAll('input[name="q9_check"]:checked');
+        if (q9Answers.length > 0 && q9Answers[0].value === "Yes") score += 2;
+        
+        // Ensure score is non-negative
+        score = Math.max(0, score);
+        
+        // Categorization with detailed levels
+        let result = "No Addiction";
+        let description = "You have healthy mobile usage habits! Keep up the mindful approach.";
+        let color = "#4CAF50"; // Green
+        
+        if (score >= 13) {
+          result = "Critically Addicted";
+          description = "Your mobile usage significantly impacts your life. Consider professional support alongside our challenges.";
+          color = "#f44336"; // Red
+        } else if (score >= 9) {
+          result = "Highly Addicted";
+          description = "You're experiencing strong dependency. Our intensive 4-week program will help you regain balance.";
+          color = "#ff9800"; // Orange
+        } else if (score >= 6) {
+          result = "Moderately Addicted";
+          description = "You show signs of regular overuse. Our structured challenges will help you build healthier habits.";
+          color = "#ffc107"; // Amber
+        } else if (score >= 3) {
+          result = "Slightly Addicted";
+          description = "You have occasional overuse patterns. Our gentle challenges will help you maintain balance.";
+          color = "#8bc34a"; // Light green
+        } else {
+          result = "No Addiction";
+          description = "You have healthy mobile usage habits! Keep up the mindful approach.";
+          color = "#4CAF50"; // Green
+        }
+
+        // Store results with user-specific key
+        const statusKey = username ? `addictionStatus_${username}` : "addictionStatus";
+        const scoreKey = username ? `addictionScore_${username}` : "addictionScore";
+        
+        localStorage.setItem(statusKey, result);
+        localStorage.setItem(scoreKey, score.toString());
+        localStorage.setItem("addictionStatus", result); // Keep for backward compatibility
+        
+        // Show detailed result in a centered container
+        showQuizResultModal({
+          result,
+          score,
+          description,
+          onContinue: () => {
+            window.location.href = "recovery.html";
+          }
+        });
+      } catch (error) {
+        console.error("Error submitting quiz:", error);
+        alert("An error occurred. Please try again.");
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit & continue";
+        }
+      }
+    }
+    
+    function showQuizResultModal({ result, score, description, onContinue }) {
+      const overlay = document.createElement("div");
+      overlay.className = "result-overlay";
+      overlay.innerHTML = `
+        <div class="result-modal">
+          <h2>Your Assessment Result</h2>
+          <div class="result-badge">${result}</div>
+          <p class="result-score">Score: <strong>${score}/18</strong></p>
+          <p class="result-description">${description}</p>
+          <button type="button" class="btn-primary result-continue">Continue to Recovery Plan</button>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const continueBtn = overlay.querySelector(".result-continue");
+      continueBtn.addEventListener("click", () => {
+        overlay.classList.add("closing");
+        setTimeout(() => {
+          if (document.body.contains(overlay)) {
+            document.body.removeChild(overlay);
+          }
+          if (typeof onContinue === "function") {
+            onContinue();
+          }
+        }, 300);
+      });
+    }
+  </script>
+</head>
+<body data-page="quiz">
+  <header class="navbar" id="navbar"></header>
+
+  <main>
+    <div class="quiz-container">
+      <h2 style="text-align:center;margin-top:0;">Mindful use check-in</h2>
+      <p style="color:var(--pastel-muted);text-align:center;">Answer honestly—your sapling grows with every insight.</p>
+      <form id="quizForm">
+        <label>
+          <span>1. Which mobile app tends to pull you in the most?</span>
+          <input type="text" name="q1_app" placeholder="e.g. Instagram, YouTube">
+        </label>
+
+        <label>
+          <span>2. How long have you been using it regularly?</span>
+          <select name="q2_duration">
+            <option value="Less than a month">Less than a month</option>
+            <option value="3 months">3 months</option>
+            <option value="6 months">6 months</option>
+            <option value="A year">A year</option>
+            <option value="More than a year">More than a year</option>
+          </select>
+        </label>
+
+        <div>
+          <p>3. How do you feel when you can’t access it?</p>
+          <div class="quiz-options">
+            <label><input type="checkbox" name="q3_feelings" value="Anxious"> Anxious</label>
+            <label><input type="checkbox" name="q3_feelings" value="Relaxed"> Relieved / relaxed</label>
+            <label><input type="checkbox" name="q3_feelings" value="Irritated"> Irritated</label>
+          </div>
+        </div>
+
+        <div>
+          <p>4. Have you tried to reduce your screen time recently?</p>
+          <div class="quiz-options inline">
+            <label><input type="radio" name="q4_attempt" value="Yes"> Yes</label>
+            <label><input type="radio" name="q4_attempt" value="No"> No</label>
+          </div>
+        </div>
+
+        <div>
+          <p>5. Is it impacting your sleep, focus, or relationships?</p>
+          <div class="quiz-options inline">
+            <label><input type="radio" name="q5_impact" value="Yes"> Yes</label>
+            <label><input type="radio" name="q5_impact" value="No"> No</label>
+          </div>
+        </div>
+
+        <label>
+          <span>6. What benefit do you usually seek when you open it?</span>
+          <textarea name="q6_benefit" placeholder="Connection, relaxation, inspiration, etc."></textarea>
+        </label>
+
+        <div>
+          <p>7. Are you open to mindful challenges to rebalance your usage?</p>
+          <div class="quiz-options inline">
+            <label><input type="radio" name="q7_openness" value="Yes"> Absolutely</label>
+            <label><input type="radio" name="q7_openness" value="No"> Not yet</label>
+          </div>
+        </div>
+
+        <label>
+          <span>8. How many hours each day do you spend on your phone?</span>
+          <select name="q8_hours">
+            <option value="Less than 1 hour">Less than 1 hour</option>
+            <option value="1–3 hours">1–3 hours</option>
+            <option value="3–6 hours">3–6 hours</option>
+            <option value="6+ hours">6+ hours</option>
+          </select>
+        </label>
+
+        <div>
+          <p>9. Do you check your phone right before bed or immediately when you wake up?</p>
+          <div class="quiz-options inline">
+            <label><input type="radio" name="q9_check" value="Yes"> Yes</label>
+            <label><input type="radio" name="q9_check" value="No"> No</label>
+          </div>
+        </div>
+
+        <button type="button" id="submitQuizBtn" class="btn-primary" style="width:100%;">Submit & continue</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Sign Up</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    function signupUser() {
+      const name = document.getElementById("name").value.trim();
+      const age = document.getElementById("age").value.trim();
+      const gender = document.getElementById("gender").value;
+      const username = document.getElementById("username").value.trim();
+
+      if (!name || !age || !gender || !username) {
+        alert("Please fill in every field so we can personalize your journey.");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const exists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
+
+      if (exists) {
+        alert("That username is already blooming. Try another or log in instead.");
+        return;
+      }
+
+      users.push({ name, age, gender, username, answers: [] });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Welcome to Bloom Recovery! Please log in to begin your mindful challenges.");
+      window.location.href = "login.html";
+    }
+  </script>
+</head>
+<body data-page="signup">
+  <header class="navbar" id="navbar"></header>
+
+  <main>
+    <div class="form-card">
+      <h2>Create your Bloom profile</h2>
+      <p style="color:var(--pastel-muted);margin-bottom:24px;">We’ll tailor weekly nudges and challenges around you.</p>
+      <input id="name" placeholder="Full name">
+      <input id="age" type="number" min="12" placeholder="Age">
+      <select id="gender">
+        <option value="">Select identity</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+        <option value="Non-binary">Non-binary</option>
+        <option value="Prefer not to say">Prefer not to say</option>
+        <option value="Self-describe">Self describe</option>
+      </select>
+      <input id="username" placeholder="Create username">
+      <button class="btn-primary" style="width:100%;" onclick="signupUser()">Sign Up</button>
+      <p style="color:var(--pastel-muted);font-size:14px;margin-top:18px;">
+        Already tending your tree? <a class="nav-link" style="color:var(--pastel-text);" href="login.html">Log in</a>
+    </p>
+  </div>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>
