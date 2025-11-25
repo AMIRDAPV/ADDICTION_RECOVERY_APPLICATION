@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Home</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    // Check if we should show loading screen (only on first visit)
+    (function() {
+      const hasSeenSplash = sessionStorage.getItem('loadedFromSplash');
+      const isDirectAccess = !document.referrer || 
+        (!document.referrer.includes('loading.html') && 
+         !document.referrer.includes('index.html') &&
+         !document.referrer.includes(window.location.origin));
+      
+      // Only redirect if user hasn't seen splash and is accessing directly
+      if (!hasSeenSplash && isDirectAccess && window.location.pathname.includes('index.html')) {
+        window.location.href = 'loading.html';
+      }
+    })();
+  </script>
+</head>
+<body data-page="home">
+  <header class="navbar" id="navbar"></header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Journey Map</h3>
+      <a class="sidebar-link" href="#mission">🌟 Mission</a>
+      <a class="sidebar-link" href="#about">🤝 About Us</a>
+      <a class="sidebar-link" href="#contact">💬 Contact</a>
+      <a class="sidebar-link" href="#settings">⚙️ Settings</a>
+      <a class="sidebar-link" href="#progress">📈 Growth Chart</a>
+    </aside>
+
+    <main class="content">
+      <section class="hero-card">
+        <span class="pill">Mindful digital habits start here</span>
+        <h1>Bloom beyond your screen</h1>
+        <p>Personalized weekly challenges, gentle reminders, and a living tree companion that celebrates every mindful moment away from your phone.</p>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn-primary" data-action="start-journey">Start My Recovery Quiz</button>
+          <button class="btn-outline" onclick="location.href='view-data.html'">View My Journey Data</button>
+        </div>
+      </section>
+
+      <section class="progress-wrapper" id="progress">
+        <h2 class="section-title">Weekly progress tracker</h2>
+        <p style="margin:0;color:var(--pastel-muted);">Complete your week-by-week challenges to watch your sapling flourish into a blooming tree.</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+          <span id="progressText" style="font-weight:600;">0% completed</span>
+          <span id="challengeCount" style="color:var(--pastel-muted);">0 of 28 mindful moments logged</span>
+        </div>
+        <div class="tree-stage" data-stage="sapling" id="treeStage">
+          <div class="tree-visual">
+            <div class="tree-trunk"></div>
+            <div class="tree-leaves"></div>
+            <div class="tree-leaf-container">
+              <!-- Leaves will be dynamically generated based on progress -->
+            </div>
+            <div class="tree-buds">
+              <!-- Buds will be dynamically generated -->
+            </div>
+            <div class="tree-flowers">
+              <!-- Flowers will be dynamically generated -->
+            </div>
+            <div class="tree-pot"></div>
+          </div>
+        </div>
+        <div class="cta-row">
+          <a class="btn-primary" style="text-decoration:none;text-align:center;" href="recovery.html">Continue Weekly Challenges</a>
+        </div>
+      </section>
+
+      <section class="card-grid" id="mission">
+        <div class="info-card">
+          <h3>Mission</h3>
+          <p>Empower mobile users to reclaim their focus with compassionate, science-backed routines that turn mindful breaks into lasting habits.</p>
+        </div>
+        <div class="info-card" id="about">
+          <h3>About Us</h3>
+          <p>Bloom Recovery is built by wellbeing coaches and behavioral psychologists who believe small, consistent wins can transform your digital life.</p>
+        </div>
+        <div class="info-card">
+          <h3>Weekly Rituals</h3>
+          <p>Every task—from mindful mornings to tech-free evenings—feeds your sapling, helping it grow leaf by leaf into a flourishing tree.</p>
+        </div>
+      </section>
+
+      <section class="card-grid" style="margin-top:32px;">
+        <div class="media-card">
+          <img src="https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=900&q=80" alt="Young man stepping away from his phone to journal outdoors">
+          <div class="media-content">
+            <h3>Pausing the scroll</h3>
+            <p>Ravi traded midnight doomscrolling for sunset journaling to anchor his evenings in calm.</p>
+          </div>
+        </div>
+        <div class="media-card">
+          <img src="https://images.unsplash.com/photo-1528892952291-009c663ce843?auto=format&fit=crop&w=900&q=80" alt="Young woman smiling while putting her phone away in her bag">
+          <div class="media-content">
+            <h3>Reclaiming mornings</h3>
+            <p>Ananya now begins her day with mindful breathing before reaching for her phone, fueling confidence for the day ahead.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="progress-wrapper" id="settings">
+        <h2 class="section-title">Personal settings</h2>
+        <div class="card-grid">
+          <div class="info-card">
+            <h3>Reminder window</h3>
+            <p>Plan when Bloom pings you gently to log your mindful win—morning, midday, or evening reflections.</p>
+            <button class="btn-outline" data-action="open-settings">Adjust reminders</button>
+          </div>
+          <div class="info-card">
+            <h3>Motivation tone</h3>
+            <p>Choose between calm affirmations, energetic cheers, or minimal check-ins to match your recovery style.</p>
+            <button class="btn-outline" data-action="open-settings">Customize tone</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="progress-wrapper" id="contact">
+        <h2 class="section-title">Let’s walk this path together</h2>
+        <p style="margin-bottom:18px;">Reach out for support, share feedback, or connect with a recovery coach.</p>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;">
+          <div class="info-card" style="flex:1;min-width:240px;">
+            <h3>Email</h3>
+            <p>support@bloomrecovery.app</p>
+          </div>
+          <div class="info-card" style="flex:1;min-width:240px;">
+            <h3>Community</h3>
+            <p>Join weekly live circles and gentle accountability buddies.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span> · Growing mindful together
+  </footer>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Weekly Plan</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body data-page="recovery">
+  <header class="navbar" id="navbar"></header>
+
+  <main class="content" style="max-width:1100px;margin:0 auto;">
+    <section class="hero-card" style="text-align:left;margin-top:42px;">
+      <span class="pill">Week-by-week mindful challenges</span>
+      <h1 style="margin-bottom:12px;">Nurture your recovery tree</h1>
+      <p>Your personalized plan adapts to how you’re feeling. Toggle a challenge when you complete it and watch your sapling transform.</p>
+      <div style="margin-top:24px;color:var(--pastel-muted);" id="statusSummary">
+        Your current status: <strong id="statusLabel">Mindful</strong>
+      </div>
+    </section>
+
+    <section class="progress-wrapper">
+      <h2 class="section-title">My weekly journeys</h2>
+      <p style="margin-bottom:24px;color:var(--pastel-muted);">Tap a week to open your daily focus tasks. Everything you complete syncs with your tree on the home page.</p>
+      <div id="feedbackMessage" style="display:none;margin-bottom:18px;padding:14px 18px;border-radius:var(--radius-md);background:rgba(198,230,201,0.35);color:var(--pastel-text);"></div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
+        <span id="progressText" style="font-weight:600;">0% completed</span>
+        <span id="challengeCount" style="color:var(--pastel-muted);">0 of 28 mindful moments logged</span>
+      </div>
+      <div class="card-grid" id="weeksGrid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+
+  <script>
+    const plans = {
+      1: ["Limit screen time to 2 hours", "Avoid phone for the first hour after waking", "Take a 15-minute mindful walk", "Read a chapter of a book", "Meditate for 10 minutes", "Have an offline conversation", "Reflect in your journal"],
+      2: ["Schedule a phone-free morning", "Practice a favorite hobby offline", "Keep the phone away during meals", "Write gratitude notes", "Meditate for 15 minutes", "Move your body for 20 minutes", "Plan a family / friend catch-up"],
+      3: ["Plan a half-day digital detox", "Mute non-essential notifications", "List three joys beyond the screen", "Call someone you miss", "Host a tech-free evening", "Cook or create something from scratch", "Sleep 30 minutes earlier"],
+      4: ["Review your month of wins", "Reduce usage by another 30%", "Enjoy an offline weekend activity", "Encourage a friend on their journey", "Sketch future goals", "Celebrate your biggest win", "Share your story with the community"]
+    };
+
+    const weeksGrid = document.getElementById("weeksGrid");
+    const feedbackMessage = document.getElementById("feedbackMessage");
+    const statusLabel = document.getElementById("statusLabel");
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Get user-specific status
+      const username = localStorage.getItem("currentUser");
+      const statusKey = username ? `addictionStatus_${username}` : "addictionStatus";
+      const status = localStorage.getItem(statusKey) || localStorage.getItem("addictionStatus");
+      
+      if (status) {
+        statusLabel.textContent = status;
+        
+        // Color code based on addiction level
+        const statusColors = {
+          "No Addiction": "#4CAF50",
+          "Slightly Addicted": "#8bc34a",
+          "Moderately Addicted": "#ffc107",
+          "Highly Addicted": "#ff9800",
+          "Critically Addicted": "#f44336"
+        };
+        
+        if (statusColors[status]) {
+          statusLabel.style.color = statusColors[status];
+          statusLabel.style.fontWeight = "600";
+        }
+      }
+      
+      renderWeeks();
+      BloomApp.updateProgressUI();
+    });
+
+    function getUserProgressKey() {
+      const currentUser = localStorage.getItem("currentUser");
+      return currentUser ? `recoveryProgress_${currentUser}` : "recoveryProgress";
+    }
+
+    function renderWeeks() {
+      const progressKey = getUserProgressKey();
+      const progress = JSON.parse(localStorage.getItem(progressKey) || "{}");
+      weeksGrid.innerHTML = "";
+
+      Object.keys(plans).forEach(week => {
+        const container = document.createElement("div");
+        container.className = "info-card";
+
+        const header = document.createElement("h3");
+        header.style.cssText = "display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-top:0;";
+        header.innerHTML = `
+          <span>Week ${week}</span>
+          <span style="font-size:14px;color:var(--pastel-muted);" id="weekSummary${week}"></span>
+        `;
+        header.addEventListener("click", () => toggleWeek(week));
+
+        const weekBody = document.createElement("div");
+        weekBody.className = "week-body";
+        weekBody.id = `weekBody${week}`;
+        weekBody.style.cssText = "display:none;margin-top:18px;";
+
+        container.appendChild(header);
+        container.appendChild(weekBody);
+        weeksGrid.appendChild(container);
+        updateWeekSummary(week, progress);
+      });
+    }
+
+    function toggleWeek(week) {
+      const body = document.getElementById(`weekBody${week}`);
+      if (!body) return;
+
+      if (body.dataset.loaded !== "true") {
+        populateWeek(week, body);
+        body.dataset.loaded = "true";
+      }
+
+      // Toggle visibility - but keep it open if it's already open
+      const isCurrentlyHidden = body.style.display === "none" || body.style.display === "";
+      body.style.display = isCurrentlyHidden ? "block" : "none";
+    }
+
+    function populateWeek(week, container) {
+      const progressKey = getUserProgressKey();
+      const progress = JSON.parse(localStorage.getItem(progressKey) || "{}");
+      const completedWeek = progress[week] || [];
+      container.innerHTML = "";
+
+      plans[week].forEach((task, index) => {
+        const isDone = completedWeek[index]?.completed || false;
+        const row = document.createElement("label");
+        row.style.cssText = "display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;cursor:pointer;";
+        
+        // Stop event propagation to prevent week from closing when clicking checkbox
+        row.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+
+        row.innerHTML = `
+          <input type="checkbox" ${isDone ? "checked" : ""} data-week="${week}" data-day="${index}">
+          <span>${task}</span>
+        `;
+        container.appendChild(row);
+      });
+
+      container.querySelectorAll("input[type='checkbox']").forEach(box => {
+        // Stop event propagation on checkbox clicks
+        box.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+        
+        box.addEventListener("change", event => {
+          event.stopPropagation();
+          const { week, day } = event.target.dataset;
+          saveProgress(week, day, event.target.checked);
+        });
+      });
+    }
+
+    function saveProgress(week, day, completed) {
+      const progressKey = getUserProgressKey();
+      const data = JSON.parse(localStorage.getItem(progressKey) || "{}");
+      if (!data[week]) data[week] = [];
+      data[week][day] = { completed };
+      localStorage.setItem(progressKey, JSON.stringify(data));
+
+      updateWeekSummary(week, data);
+      
+      // Calculate new progress
+      const { completed: newCompleted } = BloomApp.calculateProgress();
+      
+      // Show celebration if challenge was completed
+      if (completed) {
+        // Trigger leaf shower
+        if (window.BloomApp && window.BloomApp.createLeafShower) {
+          window.BloomApp.createLeafShower();
+        }
+        
+        // Show tree growth celebration after a brief delay
+        setTimeout(() => {
+          if (window.BloomApp && window.BloomApp.showTreeCelebration) {
+            window.BloomApp.showTreeCelebration(null, newCompleted);
+          }
+        }, 800);
+      }
+      
+      BloomApp.updateProgressUI();
+      showFeedback(completed ? "Nice! Your tree just grew a little more." : "No worries, try again tomorrow.");
+    }
+
+    function updateWeekSummary(week, data) {
+      const summaryEl = document.getElementById(`weekSummary${week}`);
+      if (!summaryEl) return;
+
+      const entries = data[week] || [];
+      const completed = entries.filter(item => item?.completed).length;
+      summaryEl.textContent = `${completed}/7 done`;
+    }
+
+    function showFeedback(message) {
+      if (!feedbackMessage) return;
+      feedbackMessage.textContent = message;
+      feedbackMessage.style.display = "block";
+      clearTimeout(showFeedback.timeout);
+      showFeedback.timeout = setTimeout(() => {
+        feedbackMessage.style.display = "none";
+      }, 2500);
+    }
+  </script>
+</body>
+</html>

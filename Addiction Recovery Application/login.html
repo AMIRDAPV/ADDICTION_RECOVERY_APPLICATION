@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | Login</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    function loginUser() {
+      const username = document.getElementById("username").value.trim();
+      if (!username) {
+        alert("Please enter a username!");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.username === username);
+
+      if (!user) {
+        alert("We couldn't find that account. Please sign up to begin.");
+        window.location.href = "signup.html";
+        return;
+      }
+
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("currentUser", username);
+      const hasQuizResponses = Array.isArray(user.answers) && user.answers.length > 0;
+      const message = hasQuizResponses
+        ? "Welcome back! Jump straight into your weekly challenges."
+        : "Welcome back! Let's begin with a quick mindful check-in.";
+      alert(message);
+      window.location.href = hasQuizResponses ? "recovery.html" : "quiz.html";
+    }
+
+    function initLoginPage() {
+      const panel = document.getElementById("returningUserPanel");
+      const nameEl = document.getElementById("returningUserName");
+      const loggedIn = localStorage.getItem("loggedIn") === "true";
+      const currentUser = localStorage.getItem("currentUser") || "";
+
+      if (!panel) return;
+
+      if (loggedIn && currentUser) {
+        nameEl.textContent = currentUser;
+        panel.style.display = "block";
+      } else {
+        panel.style.display = "none";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initLoginPage);
+  </script>
+</head>
+<body data-page="login">
+  <header class="navbar" id="navbar"></header>
+
+  <main>
+    <div class="form-card">
+      <h2>Log in to your journey</h2>
+      <p style="color:var(--pastel-muted);margin-bottom:24px;">Access your weekly challenges and watch your tree bloom.</p>
+      <input id="username" placeholder="Enter username">
+      <button class="btn-primary" style="width:100%;" onclick="loginUser()">Login</button>
+      <p style="color:var(--pastel-muted);font-size:14px;margin-top:18px;">
+        New here? <a class="nav-link" style="color:var(--pastel-text);" href="signup.html">Create an account</a>
+      </p>
+    </div>
+
+    <div id="returningUserPanel" class="progress-wrapper" style="display:none;max-width:480px;margin:40px auto 0;">
+      <h2 class="section-title" style="margin-bottom:12px;">Hi again, <span id="returningUserName"></span>!</h2>
+      <p style="color:var(--pastel-muted);margin-bottom:20px;">
+        Ready to pick up where you left off? Jump straight into your weekly mindful challenges or revisit the quiz anytime.
+      </p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a class="btn-primary" style="text-decoration:none;flex:1;min-width:180px;text-align:center;" href="recovery.html">Continue Weekly Challenges</a>
+        <a class="btn-outline" style="text-decoration:none;flex:1;min-width:180px;text-align:center;" href="quiz.html">Retake Mindful Quiz</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>

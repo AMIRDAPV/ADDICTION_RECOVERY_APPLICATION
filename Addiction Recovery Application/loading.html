@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloom Recovery | Loading</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #fefcff 0%, #f1fbff 40%, #fef6f9 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .loading-container {
+      text-align: center;
+      padding: 40px;
+      max-width: 500px;
+    }
+
+    .loading-gif-container {
+      width: 100%;
+      max-width: 400px;
+      height: 300px;
+      margin: 0 auto 30px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(166, 220, 239, 0.3);
+      background: linear-gradient(135deg, #a6dcef, #f7d6e0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .loading-gif-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .loading-animation {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #a6dcef 0%, #f7d6e0 50%, #c8e6c9 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .phone-icon {
+      font-size: 80px;
+      animation: phoneFloat 2s ease-in-out infinite;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+    }
+
+    @keyframes phoneFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    .recovery-icon {
+      font-size: 60px;
+      position: absolute;
+      animation: recoveryGrow 2s ease-in-out infinite;
+      opacity: 0.8;
+    }
+
+    .recovery-icon:nth-child(1) {
+      top: 20%;
+      left: 15%;
+      animation-delay: 0s;
+    }
+
+    .recovery-icon:nth-child(2) {
+      top: 60%;
+      right: 20%;
+      animation-delay: 0.5s;
+    }
+
+    .recovery-icon:nth-child(3) {
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      animation-delay: 1s;
+    }
+
+    @keyframes recoveryGrow {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+      50% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+    }
+
+    .loading-text {
+      color: #3a3a3a;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      animation: textFade 2s ease-in-out infinite;
+    }
+
+    @keyframes textFade {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    .loading-subtext {
+      color: #6b6b6b;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(166, 220, 239, 0.3);
+      border-top: 4px solid #a6dcef;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .brand-name {
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a6dcef, #f7d6e0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-container">
+    <div class="brand-name">🌱 Bloom Recovery</div>
+    
+    <div class="loading-gif-container">
+      <div class="loading-animation">
+        <div class="phone-icon">📱</div>
+        <div class="recovery-icon">🌿</div>
+        <div class="recovery-icon">🌸</div>
+        <div class="recovery-icon">✨</div>
+      </div>
+    </div>
+    
+    <div class="loading-text">Growing Your Recovery Journey</div>
+    <div class="loading-subtext">Taking a mindful moment to prepare your personalized experience...</div>
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    // Mark that we've shown the loading screen
+    sessionStorage.setItem('loadedFromSplash', 'true');
+    
+    // Preload homepage for smoother transition
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = 'index.html';
+    document.head.appendChild(link);
+    
+    // Redirect to homepage after loading animation
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 2500); // 2.5 second loading screen
+  </script>
+</body>
+</html>
+

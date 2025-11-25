@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloom Recovery | View Data</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+  <script>
+    function loadData() {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const dataDiv = document.getElementById("dataContainer");
+      const jsonBox = document.getElementById("jsonBox");
+      const emptyState = document.getElementById("emptyState");
+
+      if (users.length === 0) {
+        dataDiv.innerHTML = "";
+        emptyState.style.display = "block";
+        jsonBox.value = "[]";
+        return;
+      }
+
+      emptyState.style.display = "none";
+      dataDiv.innerHTML = users.map((user, index) => `
+        <div class="data-card">
+          <h3 style="margin-top:0;">${user.name || "Bloom user"} <span style="color:var(--pastel-muted);font-size:14px;">@${user.username}</span></h3>
+          <p><strong>Age:</strong> ${user.age || "—"}</p>
+          <p><strong>Identity:</strong> ${user.gender || "—"}</p>
+          <p><strong>Quiz reflections:</strong> ${user.answers && user.answers.length ? user.answers.join(", ") : "No answers recorded yet."}</p>
+          </div>
+      `).join("");
+
+      jsonBox.value = JSON.stringify(users, null, 2);
+    }
+
+    function clearData() {
+      if (confirm("Are you sure you want to clear all locally stored user data? This cannot be undone.")) {
+        localStorage.clear();
+        loadData();
+        BloomApp.updateProgressUI();
+      }
+    }
+  </script>
+</head>
+<body data-page="data" onload="loadData()">
+  <header class="navbar" id="navbar"></header>
+
+  <main class="content" style="max-width:1100px;margin:0 auto;">
+    <section class="hero-card" style="margin-top:40px;">
+      <span class="pill">Transparent & exportable</span>
+      <h1>Your stored recovery data</h1>
+      <p>All user profiles are stored in the browser in human-readable JSON so you remain in control. Export, review, or clear anytime.</p>
+      <div style="margin-top:18px;color:var(--pastel-muted);font-size:14px;">
+        Tip: Copy the JSON block below to share progress with a coach or save a backup.
+      </div>
+    </section>
+
+    <div id="emptyState" class="info-card" style="display:none;margin-top:24px;">
+      <h3>No data yet</h3>
+      <p>Once you sign up and complete the quiz, your profile will appear here in JSON format.</p>
+    </div>
+
+    <section class="data-container" id="dataContainer"></section>
+
+    <section class="progress-wrapper" style="margin-top:32px;">
+      <h2 class="section-title">JSON export</h2>
+      <textarea id="jsonBox" class="json-viewer" readonly></textarea>
+      <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;">
+        <button class="btn-outline" onclick="navigator.clipboard.writeText(document.getElementById('jsonBox').value).then(()=>alert('Copied to clipboard!'))">Copy JSON</button>
+        <button class="btn-primary" onclick="clearData()">Clear all data</button>
+  </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Bloom Recovery © <span id="year"></span>
+  </footer>
+</body>
+</html>
